@@ -1,0 +1,18 @@
+<h1 id="url"></h1>
+<h2 id="opener"></h2>
+<button id="button">Open popup</button>
+<button id="button-google">Open google</button>
+<a href="http://host2.local:9001/index.html">http://host2.local:9001/index.html</a>
+<a href="http://host1.local:9001/index.html">http://host1.local:9001/index.html</a>
+<a href="https://google.com">https://google.com</a>
+<script>
+  document.getElementById('url').innerText = location.href;
+  document.getElementById('opener').innerText = `window.opener ${window.opener ? 'yes' :'no'}`
+  const button = document.getElementById('button');
+  button.addEventListener('click', (e) => {
+    window.open(location.href);
+  })
+  document.getElementById('button-google').addEventListener('click', (e) => {
+    window.open('https://google.com');
+  })
+</script>
