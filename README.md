@@ -17,6 +17,3 @@ To reproduce:
 - Click "Open popup"
 - Click on `http://host2.local:9001/index.html`
 - => `window.opener` is not defined
-
-
-`sudo` is required because we write in `/etc/hosts` to have 2 domains pointing to a local http server.

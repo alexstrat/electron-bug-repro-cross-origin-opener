@@ -1,30 +1,12 @@
-const {app, BrowserWindow} = require('electron')
-var StaticServer = require('static-server');
-var hostile = require('hostile')
+const { app, BrowserWindow, protocol} = require('electron')
+var path = require('path');
+var fs = require('fs');
 
 let mainWindow
 
 app.on('ready', async () => {
-  var server1 = new StaticServer({
-    rootPath: __dirname,
-    port: 9001,
-  });
-  await new Promise(resolve => server1.start(resolve));
-  
-  // var server2 = new StaticServer({
-  //   rootPath: __dirname,
-  //   port: 9002,
-  // });
-  // await new Promise(resolve => server2.start(resolve));
-
-  // To simulate navigation between 2 different domains,
-  // using ports (localhost:port1, localhost:port2) did not
-  // seem be enough: no render process change happened.
-  // Instead, we are tweaking host files (using `hostile`)
-  // to have 2 totaly different hostnames (host2.local
-  // and host1.local) pointing to localhost.
-  hostile.set('127.0.0.1', 'host2.local')
-  hostile.set('127.0.0.1', 'host1.local')
+  await serveFileFromProtocol('bar', path.join(__dirname, 'index.html'));
+  await serveFileFromProtocol('foo', path.join(__dirname, 'index.html'));
 
   mainWindow = new BrowserWindow({
     width: 800,
@@ -40,3 +22,22 @@ app.on('ready', async () => {
   // mainWindow.loadURL('http://localhost:9001/index.html');
 
 })
+
+function serveFileFromProtocol(protocolName, filePath) {
+  return new Promise((resolve, reject) => {
+    protocol.registerBufferProtocol(protocolName, (request, callback) => {
+      // Disabled due to false positive in StandardJS
+      // eslint-disable-next-line standard/no-callback-literal
+      callback({
+        mimeType: 'text/html',
+        data: fs.readFileSync(filePath)
+      })
+    }, (error) => {
+      if (error != null) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
