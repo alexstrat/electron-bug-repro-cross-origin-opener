@@ -19,7 +19,7 @@ app.on('ready', async () => {
 
   // To simulate navigation between 2 different domains,
   // using ports (localhost:port1, localhost:port2) did not
-  // seem be enough: no render process change happened
+  // seem be enough: no render process change happened.
   // Instead, we are tweaking host files (using `hostile`)
   // to have 2 totaly different hostnames (host2.local
   // and host1.local) pointing to localhost.
