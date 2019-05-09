@@ -1,15 +1,31 @@
 <h1 id="url"></h1>
 <pre id="opener"></pre>
+<pre id="opener-url"></pre>
 <pre id="process"></pre>
 <button id="button">Open popup</button>
+<pre id="opened"></pre>
+<button id="reload">Reload</button>
 <a href="bar://page">bar://page</a>
 <a href="foo://page">foo://page</a>
 <script>
+  function getOpenerURL() {
+    try {
+      return window.opener ? window.opener.location.href : 'no';
+    } catch(e) {
+      return e;
+    }
+  }
   document.getElementById('url').innerText = location.href;
   document.getElementById('opener').innerText = `window.opener ${window.opener ? 'yes' :'no'}`
+  document.getElementById('opener-url').innerText = `window.opener.location.href ${getOpenerURL()}`
   document.getElementById('process').innerText = `process.pid ${process.pid}`;
   const button = document.getElementById('button');
   button.addEventListener('click', (e) => {
-    window.open(location.href);
+    const opened = window.open(location.href);
+    document.getElementById('opened').innerText = opened && !opened.closed ? 'opened: yes' : 'opened: no';
+  });
+  const reload = document.getElementById('reload');
+  reload.addEventListener('click', (e) => {
+    location.reload();
   })
 </script>
