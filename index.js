@@ -14,6 +14,8 @@ app.on('ready', async () => {
     webPreferences: {
       nativeWindowOpen: true,
       webviewTag: true,
+      nodeIntegration: true,
+      nodeIntegrationInSubFrames: true,
       // sandbox: true,
       // nodeIntegration: true
     }

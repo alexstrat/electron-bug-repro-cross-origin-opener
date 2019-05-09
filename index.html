@@ -1,11 +1,13 @@
 <h1 id="url"></h1>
-<h2 id="opener"></h2>
+<pre id="opener"></pre>
+<pre id="process"></pre>
 <button id="button">Open popup</button>
 <a href="bar://page">bar://page</a>
 <a href="foo://page">foo://page</a>
 <script>
   document.getElementById('url').innerText = location.href;
   document.getElementById('opener').innerText = `window.opener ${window.opener ? 'yes' :'no'}`
+  document.getElementById('process').innerText = `process.pid ${process.pid}`;
   const button = document.getElementById('button');
   button.addEventListener('click', (e) => {
     window.open(location.href);
